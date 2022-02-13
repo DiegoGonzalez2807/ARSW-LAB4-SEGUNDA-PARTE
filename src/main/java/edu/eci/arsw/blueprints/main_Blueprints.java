@@ -38,10 +38,10 @@ public class main_Blueprints implements CommandLineRunner {
             services.addNewBlueprint(new Blueprint(author,"plano"+(i*2)));
             services.addNewBlueprint(new Blueprint(author1,"plano"+(i*2)+1));
         }
-        System.out.println("--------PRUEBA DE REGISTRO DE PLANOS PARA AUTOR DIEGO--------");
+        System.out.println("--------PRUEBA DE REGISTRO DE PLANOS--------");
         System.out.println(services.getAllBlueprints());
         System.out.println("--------PRUEBA DE REGISTRO DE CONSULTA DE PLANOS PARA AUTOR CRISTIAN--------");
-        System.out.println(services.getBlueprintsByAuthor("Diego"));
+        System.out.println(services.getBlueprintsByAuthor("Cristian"));
 
     }
 
