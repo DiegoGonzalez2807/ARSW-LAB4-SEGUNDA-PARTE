@@ -38,17 +38,27 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     
     @Override
     public void saveBlueprint(Blueprint bp) throws BlueprintPersistenceException {
-        if (blueprints.containsKey(new Tuple<>(bp.getAuthor(),bp.getName()))){
+        if (this.blueprints.containsKey(new Tuple<>(bp.getAuthor(),bp.getName()))){
             throw new BlueprintPersistenceException("The given blueprint already exists: "+bp);
         }
         else{
-            blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+            this.blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
         }        
     }
 
     @Override
     public Blueprint getBlueprint(String author, String bprintname) throws BlueprintNotFoundException {
+        System.out.println(blueprints.size());
         return blueprints.get(new Tuple<>(author, bprintname));
+    }
+
+    @Override
+    public Set<Blueprint> getBluePrints() throws BlueprintPersistenceException, BlueprintNotFoundException {
+        Set<Blueprint> prints = new HashSet<>();
+        for(Tuple<String,String> tuple: this.blueprints.keySet()){
+                prints.add(blueprints.get(tuple));
+        }
+        return prints;
     }
 
     @Override
@@ -56,12 +66,10 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         //El hashset ayuda a determinar si un objeto ya esta en la lista o no mediante la matriz. Misma funcion que Set
         Set<Blueprint> prints = new HashSet<>();
         for(Tuple<String,String> tuple: this.blueprints.keySet()){
-            if(tuple.getElem1().equals(author)){
+            if(tuple.o1.equals(author)){
                 prints.add(blueprints.get(tuple));
             }
         }
         return prints;
     }
-
-
 }
