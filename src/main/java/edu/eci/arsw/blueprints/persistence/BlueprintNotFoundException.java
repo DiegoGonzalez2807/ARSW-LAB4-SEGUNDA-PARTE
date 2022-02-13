@@ -5,10 +5,14 @@
  */
 package edu.eci.arsw.blueprints.persistence;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 /**
  *
  * @author hcadavid
  */
+
 public class BlueprintNotFoundException extends Exception{
 
     public BlueprintNotFoundException(String message) {
