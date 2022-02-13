@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -49,6 +51,17 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         return blueprints.get(new Tuple<>(author, bprintname));
     }
 
-    
-    
+    @Override
+    public Set<Blueprint> getBlueprintsByAuthor(String author) throws BlueprintNotFoundException {
+        //El hashset ayuda a determinar si un objeto ya esta en la lista o no mediante la matriz. Misma funcion que Set
+        Set<Blueprint> prints = new HashSet<>();
+        for(Tuple<String,String> tuple: this.blueprints.keySet()){
+            if(tuple.getElem1().equals(author)){
+                prints.add(blueprints.get(tuple));
+            }
+        }
+        return prints;
+    }
+
+
 }
