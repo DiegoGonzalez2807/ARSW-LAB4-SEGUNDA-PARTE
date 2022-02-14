@@ -42,7 +42,7 @@ public class InMemoryPersistenceTest {
     }
 
     @Test
-    public void deberiaEncontrarListadeBlueprints() throws BlueprintPersistenceException, BlueprintNotFoundException{
+    public void deberiaEncontrarListadeBlueprintsporAutor() throws BlueprintPersistenceException, BlueprintNotFoundException{
         InMemoryBlueprintPersistence ibpp=new InMemoryBlueprintPersistence();
         Point[] pts0=new Point[]{new Point(40, 40),new Point(15, 15)};
         Blueprint bp0=new Blueprint("Diego", "Pintura1",pts0);
