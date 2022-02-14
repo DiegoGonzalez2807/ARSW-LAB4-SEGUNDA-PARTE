@@ -53,6 +53,19 @@ public Blueprint getBlueprint(String author,String name) throws BlueprintNotFoun
 ```
 #### Implementación getBlueprintsByAuthor() en los inMemory
 ##### Lo que se hace es inicializar un hashSet, este ayuda a revisar si un elemento está repetido en la lista. Se revisa el arreglo de Blueprints que nos dan por memoria y revisamos el primer elemento de la tupla<String,String> donde en caso que sea igual que el autor buscado, se manda todo el blueprint al hashset.
+```java
+@Override
+    public Set<Blueprint> getBlueprintsByAuthor(String author) throws BlueprintNotFoundException {
+        //El hashset ayuda a determinar si un objeto ya esta en la lista o no mediante la matriz. Misma funcion que Set
+        Set<Blueprint> prints = new HashSet<>();
+        for(Tuple<String,String> tuple: this.blueprints.keySet()){
+            if(tuple.o1.equals(author)){
+                prints.add(blueprints.get(tuple));
+            }
+        }
+        return prints;
+    }
+```
 
 #### Prueba de getBlueprintsByAuthor()
 ##### Lo que se hizo es crear 3 BluePrints con un mismo autor e insertarlos en la memoria de Blueprints. Si la longitud de la lista de Blueprints creados por el autor es igual a un número específico (3 en este caso), eso quiere decir que la función si está revisando y enviando bien los blueprints del autor.
@@ -60,6 +73,51 @@ public Blueprint getBlueprint(String author,String name) throws BlueprintNotFoun
 ![img1](https://github.com/DiegoGonzalez2807/ARSW-LAB4-SEGUNDA-PARTE/blob/master/img/IMAGEN1.png)
 
 3. Haga un programa en el que cree (mediante Spring) una instancia de BlueprintServices, y rectifique la funcionalidad del mismo: registrar planos, consultar planos, registrar planos específicos, etc.
+#### Implementación de Spring en Maven 
+
+##### Lo primero que se tiene que hacer es colocar en el pom la siguiente dependecia así como la etiqueta parent en el archivo. Esto con el fin de que al iniciar maven, nos acepte comandos como "mvn spring-boot:run"
+``` xml
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+```
+``` xml
+    	<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.1.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.1.3.RELEASE</version>
+        </dependency>
+	<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+```
+
+##### Con las dependencias puestas, podemos empezar a crear el main de BluePrints. Este tiene una nueva dependencia la cuál será @SpringBootApplication. Esta dependencia sirve para autoconfigurar nuestra clase principal en la aplicación. También tendremos una implementación llamada " CommandLineRunner". Esta implementación es una simple interfaz de Spring Boot con un método de ejecución. Spring Boot llamará automáticamente al método de ejecución de todos los beans que implementen esta interfaz después de cargar el contexto de la aplicación.
+```java
+@SpringBootApplication
+public class main_Blueprints implements CommandLineRunner {
+
+    @Autowired
+    BlueprintsServices services;
+
+    public static void main(String[] args) {
+        SpringApplication.run(main_Blueprints.class,args);
+    }
+    @Override
+    public void run(String... args) throws Exception{}
+```
+##### Con este código decimos que vamos a inyectar BlueprintServices en una variable a partir de la dependencia @Autowired. Como se puede observar, con CommandLineRunner podemos sobreescribir el método run de la clase principal. Esto se usará para que en run() se pueda definir los autores y cada que corra esta inserte los planos de cada autor, así como las pruebas donde se muestra el buen funcionamiento.
+
+![img1](https://github.com/DiegoGonzalez2807/ARSW-LAB4-SEGUNDA-PARTE/blob/master/img/IMAGEN2.png)
 
 4. Se quiere que las operaciones de consulta de planos realicen un proceso de filtrado, antes de retornar los planos consultados. Dichos filtros lo que buscan es reducir el tamaño de los planos, removiendo datos redundantes o simplemente submuestrando, antes de retornarlos. Ajuste la aplicación (agregando las abstracciones e implementaciones que considere) para que a la clase BlueprintServices se le inyecte uno de dos posibles 'filtros' (o eventuales futuros filtros). No se contempla el uso de más de uno a la vez:
 	* (A) Filtrado de redundancias: suprime del plano los puntos consecutivos que sean repetidos.
