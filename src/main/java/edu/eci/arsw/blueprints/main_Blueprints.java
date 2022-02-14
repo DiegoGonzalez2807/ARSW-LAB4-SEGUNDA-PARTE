@@ -1,10 +1,10 @@
 package edu.eci.arsw.blueprints;
 
 
+import edu.eci.arsw.blueprints.filter.services.FilterService;
 import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.services.BlueprintsServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +14,9 @@ public class main_Blueprints implements CommandLineRunner {
 
     @Autowired
     BlueprintsServices services;
+
+    @Autowired
+    FilterService filters;
 
     public static void main(String[] args) {
         SpringApplication.run(main_Blueprints.class,args);
