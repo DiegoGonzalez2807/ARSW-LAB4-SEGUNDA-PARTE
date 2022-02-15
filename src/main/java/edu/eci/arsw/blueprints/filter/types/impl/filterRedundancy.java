@@ -24,7 +24,7 @@ public class filterRedundancy implements filterType {
     public void review(Blueprint bp, Point point){
         List<Point> points = bp.getPoints();
         for(int i = 0; i<=points.size()-1;i++){
-            if(point == points.get(i)){
+            if(point.equals(points.get(i))){
                 points.remove(i);
             }
         }

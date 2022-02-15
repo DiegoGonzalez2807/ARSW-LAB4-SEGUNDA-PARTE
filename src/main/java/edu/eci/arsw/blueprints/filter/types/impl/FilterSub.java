@@ -4,9 +4,13 @@ import edu.eci.arsw.blueprints.filter.types.filterType;
 import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
-
+@Component
+@Qualifier("Sub")
 public class FilterSub implements filterType {
     /**
      * Funcion sobreescrita para que filtre los puntos de un blueprint por
