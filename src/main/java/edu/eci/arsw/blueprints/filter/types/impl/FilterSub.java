@@ -2,12 +2,15 @@ package edu.eci.arsw.blueprints.filter.types.impl;
 
 import edu.eci.arsw.blueprints.filter.types.filterType;
 import edu.eci.arsw.blueprints.model.Blueprint;
+import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 @Component
 @Qualifier("Sub")
@@ -20,11 +23,13 @@ public class FilterSub implements filterType {
      */
     @Override
     public void filterBlueprint(Blueprint bp) throws BlueprintNotFoundException {
-        for(int i = 0; i<=bp.getPoints().size();i++){
+        List<Point> points = new ArrayList<Point>(bp.getPoints());
+        for(int i = 0; i<points.size();i++){
             if(i%2 == 0){
-                bp.getPoints().remove(i);
+                points.remove(i);
             }
         }
+        bp.setPoints(points);
     }
 
     @Override

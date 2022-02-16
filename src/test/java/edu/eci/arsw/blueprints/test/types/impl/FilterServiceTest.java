@@ -1,6 +1,7 @@
 package edu.eci.arsw.blueprints.test.types.impl;
 
 import edu.eci.arsw.blueprints.filter.services.FilterService;
+import edu.eci.arsw.blueprints.filter.types.impl.FilterSub;
 import edu.eci.arsw.blueprints.filter.types.impl.filterRedundancy;
 import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.model.Point;
@@ -53,10 +54,10 @@ public class FilterServiceTest {
         } catch (BlueprintNotFoundException e) {
             e.printStackTrace();
         }
-        Blueprint[] sbpA = (Blueprint[])sbp.toArray();
-        Assert.assertEquals(2,sbpA[0]);
-        Assert.assertEquals(1,sbpA[1]);
-        Assert.assertEquals(0,sbpA[1]);
+        Object[] sbpA = sbp.toArray();
+        Assert.assertEquals(2,((Blueprint)sbpA[0]).getPoints().size());
+        Assert.assertEquals(1,((Blueprint)sbpA[1]).getPoints().size());
+        Assert.assertEquals(0,((Blueprint)sbpA[2]).getPoints().size());
 
     }
 
@@ -75,9 +76,33 @@ public class FilterServiceTest {
         } catch (BlueprintNotFoundException e) {
             e.printStackTrace();
         }
-        Blueprint[] sbpA = (Blueprint[])sbp.toArray();
-        Assert.assertEquals(6,sbpA[0]);
-        Assert.assertEquals(1,sbpA[1]);
-        Assert.assertEquals(0,sbpA[1]);
+        Object[] sbpA = sbp.toArray();
+        Assert.assertEquals(6,((Blueprint)sbpA[0]).getPoints().size());
+        Assert.assertEquals(1,((Blueprint)sbpA[1]).getPoints().size());
+        Assert.assertEquals(0,((Blueprint)sbpA[2]).getPoints().size());
+    }
+
+    @Test
+    public void DeberiaFiltrarPorSubmuestreo(){
+        FilterSub fs = new FilterSub();
+        Point[] pts0 = new Point[]{new Point(10,10),new Point(14,12),new Point(19,20),new Point(34,25),new Point(1,4),
+                                   new Point(14,18),new Point(1,4),new Point(9,80),new Point(8,7), new Point(14,25)};
+        Point[] pts1 = new Point[]{new Point(1,2),new Point(2,6)};
+        Point[] pts2 = new Point[]{};
+        Blueprint bp0=new Blueprint("mack", "mypaint",pts0);
+        Blueprint bp1 = new Blueprint("prueba","2",pts1);
+        Blueprint bp2 = new Blueprint("prueba","3",new Point[]{});
+
+        try {
+            fs.filterBlueprint(bp0);
+            fs.filterBlueprint(bp1);
+            fs.filterBlueprint(bp2);
+        } catch (BlueprintNotFoundException e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(6,bp0.getPoints().size());
+        Assert.assertEquals(1,bp1.getPoints().size());
+        Assert.assertEquals(0,bp2.getPoints().size());
+
     }
 }
