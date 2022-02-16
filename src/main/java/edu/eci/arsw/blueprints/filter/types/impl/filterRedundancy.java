@@ -8,6 +8,7 @@ import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class filterRedundancy implements filterType {
      * @param point
      */
     public void review(Blueprint bp, Point point){
-        List<Point> points = bp.getPoints();
+        List<Point> points = new ArrayList<Point>(bp.getPoints());
         for(int i = 0; i<=points.size()-1;i++){
             if(point.equals(points.get(i))){
                 points.remove(i);
