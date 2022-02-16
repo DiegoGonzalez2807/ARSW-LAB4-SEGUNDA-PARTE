@@ -24,12 +24,17 @@ public class FilterSub implements filterType {
     @Override
     public void filterBlueprint(Blueprint bp) throws BlueprintNotFoundException {
         List<Point> points = new ArrayList<Point>(bp.getPoints());
+        List<Point> pointsFilter = new ArrayList<Point>();
+        int size = points.size();
         for(int i = 0; i<points.size();i++){
-            if(i%2 == 0){
-                points.remove(i);
+            //System.out.println("Index :"+i);
+            if(i%2 == 1){
+                //System.out.println("Size: "+points.size()+"Indice: "+i);
+                pointsFilter.add(points.get(i));
+                //System.out.println(pointsFilter);
             }
         }
-        bp.setPoints(points);
+        bp.setPoints(pointsFilter);
     }
 
     @Override
