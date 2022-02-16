@@ -122,5 +122,64 @@ public class main_Blueprints implements CommandLineRunner {
 4. Se quiere que las operaciones de consulta de planos realicen un proceso de filtrado, antes de retornar los planos consultados. Dichos filtros lo que buscan es reducir el tamaño de los planos, removiendo datos redundantes o simplemente submuestrando, antes de retornarlos. Ajuste la aplicación (agregando las abstracciones e implementaciones que considere) para que a la clase BlueprintServices se le inyecte uno de dos posibles 'filtros' (o eventuales futuros filtros). No se contempla el uso de más de uno a la vez:
 	* (A) Filtrado de redundancias: suprime del plano los puntos consecutivos que sean repetidos.
 	* (B) Filtrado de submuestreo: suprime 1 de cada 2 puntos del plano, de manera intercalada.
+	*
+##### El contexto par la creación de los filtros y su abstracción es a partir de la abstracción de blueprints.
+![img1](https://github.com/DiegoGonzalez2807/ARSW-LAB4-SEGUNDA-PARTE/blob/master/img/IMAGEN3.png)
+##### Como se puede mirar en la imagen, tenemos un FilterService, el cual es el encargado de dar las funciones de filtrado al usuario. Este tiene una variable la cuál se le pone la etiqueta @Autowired y @Service debido a que esa variable va a ser inyectada con el tipo de filtro (Recordar que solo puede estar en funcionamiento uno)
+```java
+@Service
+public class FilterService {
+    @Autowired
+    @Qualifier("Redundancy")
+    filterType filter;
+
+    public void filterBlueprint(Blueprint bp) throws BlueprintNotFoundException {
+        filter.filterBlueprint(bp);
+    }
+    public void filterBlueprints(Set<Blueprint> blueprints) throws BlueprintNotFoundException, BlueprintPersistenceException {
+        filter.filterBlueprints(blueprints);
+    }
+```
+##### Esta variable responde a una clase filterType. Esta es una interfaz la cuál tiene 3 métodos. Todos estos son de filtrado, tanto individual, como también por un arreglo de blueprints. También se implementa la filtración de blueprints de acuerdo al autor que quiera filtrar el usuario.
+```java
+public interface filterType {
+
+    public void filterBlueprint(Blueprint bp) throws BlueprintNotFoundException;
+    public void filterBlueprints(Set<Blueprint> blueprints) throws BlueprintPersistenceException, BlueprintNotFoundException;
+    public void filterPrintsByAuthor(String author, Set<Blueprint> blueprints) throws BlueprintNotFoundException;
+}
+```
+##### Tenemos dos hijos de la interfaz filterType: filterRedundancy y filterSub. El primero revisa el blueprint y revisa los puntos de este en busca de repetidos. En caso que los encuentre, los elimina y retorna una lista sin ningún punto repetido. El segundo filtro se encarga de eliminar los puntos del blueprint de manera intercalada.
+
+#### Funcion principal de filtrado de redundancia (Se encuentra en la clase filterRedundancy.java)
+```java
+public void review(Blueprint bp, Point point){
+        List<Point> points = new ArrayList<Point>(bp.getPoints());
+        for(int i = 0; i<=points.size()-1;i++){
+            if(point.equals(points.get(i))){
+                points.remove(i);
+            }
+        }
+        points.add(point);
+        bp.setPoints(points);
+    }
+```
+#### Funcion principal de filtrado de submuestreo (Se encuentra en la clase filterSub.java)
+```java
+public void filterBlueprint(Blueprint bp) throws BlueprintNotFoundException {
+        List<Point> points = new ArrayList<Point>(bp.getPoints());
+        List<Point> pointsFilter = new ArrayList<Point>();
+        int size = points.size();
+        for(int i = 0; i<points.size();i++){
+            //System.out.println("Index :"+i);
+            if(i%2 == 1){
+                //System.out.println("Size: "+points.size()+"Indice: "+i);
+                pointsFilter.add(points.get(i));
+                //System.out.println(pointsFilter);
+            }
+        }
+        bp.setPoints(pointsFilter);
+    }
+```
 
 5. Agrege las pruebas correspondientes a cada uno de estos filtros, y pruebe su funcionamiento en el programa de prueba, comprobando que sólo cambiando la posición de las anotaciones -sin cambiar nada más-, el programa retorne los planos filtrados de la manera (A) o de la manera (B). 
