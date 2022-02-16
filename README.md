@@ -183,3 +183,4 @@ public void filterBlueprint(Blueprint bp) throws BlueprintNotFoundException {
 ```
 
 5. Agrege las pruebas correspondientes a cada uno de estos filtros, y pruebe su funcionamiento en el programa de prueba, comprobando que sólo cambiando la posición de las anotaciones -sin cambiar nada más-, el programa retorne los planos filtrados de la manera (A) o de la manera (B). 
+	![https://github.com/DiegoGonzalez2807/ARSW-LAB4-SEGUNDA-PARTE/blob/master/img/PruebasExitosas.jpg](Pruebas Exitosas)   
